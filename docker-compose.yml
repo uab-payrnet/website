@@ -1,0 +1,27 @@
+wordpress:
+  image: wordpress:latest
+  container_name: wordpress
+  hostname: wordpress
+  restart: always
+  ports:
+    - "8080:80"
+  volumes:
+    - /nfs/wordpress-mount/website:/var/www/html
+    - /nfs/wordpress-mount/config/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+  env_file: wp.env
+  environment:
+    - WORDPRESS_DB_HOST=$RDS_HOST:3306
+    - WORDPRESS_DB_USER=$MYSQL_USER
+    - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+    - WORDPRESS_DB_NAME=wordpress
+    - WORDPRESS_CONFIG_EXTRA: |
+      define( 'WP_MEMORY_LIMIT', '96M' );
+
+webserver:
+  depends_on:
+    - wordpress
+  image: nginx:latest
+  container_name: webserver
+  restart: unless-stopped
+  ports:
+    - "443:443"

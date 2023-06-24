@@ -15,7 +15,7 @@ wordpress:
     - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
     - WORDPRESS_DB_NAME=wordpress
     - WORDPRESS_CONFIG_EXTRA: |
-      define( 'WP_MEMORY_LIMIT', '96M' );
+        define( 'WP_MEMORY_LIMIT', '96M' );
 
 webserver:
   depends_on:
